@@ -13,7 +13,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'YemisApp',
       theme: ThemeData(
-        // colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         primarySwatch: Colors.green,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         useMaterial3: true,
@@ -23,66 +22,61 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  late TextEditingController controller;
+  String text = "";
+
+  @override
+  void initState() {
+    super.initState();
+    controller = TextEditingController();
+  }
+
+  void changeText(String text) {
+    setState(() {
+      this.text = text;
+    });
+  }
+
+  void _sendMessage() {
+    changeText(controller.text);
+    controller.clear();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Hello World! It's Yemi"),
-          backgroundColor: Colors.green,
-          foregroundColor: Colors.white,
-        ),
-        body: const TextInputWidget()
-        // const Row(
-        //   children: <Widget>[TestWdidget(), TestWdidget(), TestWdidget()],
-        // ),
-        );
-  }
-}
-
-// class TestWdidget extends StatelessWidget {
-//   const TestWdidget({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return const Text("Hello World!");
-//   }
-// }
-
-class TextInputWidget extends StatefulWidget {
-  const TextInputWidget({super.key});
-
-  @override
-  State<TextInputWidget> createState() => _TextInputWidgetState();
-}
-
-class _TextInputWidgetState extends State<TextInputWidget> {
-  final controller = TextEditingController();
-  // String text = "";
-
-  @override
-  void dispose() {
-    super.dispose();
-    controller.dispose();
-  }
-
-  void emptyFunction() {}
-
-  @override
-  Widget build(BuildContext context) {
-    return TextField(
-      controller: controller,
-      decoration: const InputDecoration(
-          prefixIcon: Icon(Icons.message),
-          labelText: "Type a message here",
-          suffixIcon: IconButton(
-            icon: Icon(Icons.send),
-            splashColor: Colors.black12,
-            tooltip: "Send Maeesage",
-            onPressed: emptyFunction(),
-          )),
+      appBar: AppBar(
+        title: const Text("Hello World! It's Yemi"),
+        backgroundColor: Colors.green,
+        foregroundColor: Colors.white,
+      ),
+      body: Column(
+        children: <Widget>[
+          TextField(
+            controller: controller,
+            decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.message),
+                labelText: "Type a message here",
+                suffixIcon: IconButton(
+                  icon: const Icon(Icons.send),
+                  splashColor: Colors.black12,
+                  tooltip: "Send Message",
+                  onPressed: () {
+                    _sendMessage();
+                  },
+                )),
+          ),
+          Text(text),
+        ],
+      ),
     );
   }
 }
